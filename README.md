@@ -3,7 +3,7 @@
 #### Alumno: Carolina Ramos Sosoniuk
 #### Comisión: 50070
 
-## Proyecto: Beau 💄 - Retailer de productos de belleza
+## Proyecto: Beau 💄 Retailer de productos de belleza
 
 ### ⚙Tecnologías Utilizadas
 - SQL
