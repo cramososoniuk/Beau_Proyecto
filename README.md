@@ -1,4 +1,4 @@
-# SQL
+# Coderhouse - Curso de SQL
 
 #### Alumno: Carolina Ramos Sosoniuk
 #### Comisión: 50070
