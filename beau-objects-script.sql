@@ -95,7 +95,8 @@ BEGIN
     SELECT SUM(total_spent) INTO total
     FROM shopping_history sh
     JOIN customers c ON c.id = sh.customer_id
-    WHERE c.email = f_customer_email;
+    WHERE c.email = f_customer_email
+    AND DATEDIFF(sh.date, NOW()) < 365;
     
     IF total > 350 THEN
 		SET vip = 'VIP';
