@@ -38,6 +38,7 @@ ORDER BY p.id ASC;
 CREATE VIEW v_customer_info AS
 SELECT
 	c.id AS "Customer ID",
+    c.email AS "Email",
     CONCAT(c.first_name,' ', c.last_name) AS "Full Name",
     c.date_of_birth AS "Date of Birth",
     TIMESTAMPDIFF(YEAR,c.date_of_birth,NOW()) AS "Age",
@@ -52,7 +53,7 @@ CREATE VIEW v_shopping_historic AS
 SELECT
 	sh.id AS "Purchase ID",
     DATE(sh.date) AS "Date",
-    CONCAT(c.first_name,' ', c.last_name) AS "Full Name",
+    c.email AS "Email",
     ch.channel_type AS "Channel",
     s.name AS "Store Name",
     sh.total_spent AS "Total Spent",
@@ -69,6 +70,7 @@ ORDER BY sh.date DESC;
 CREATE VIEW v_customer_loved_products AS
 SELECT
 	p.id AS "Product ID",
+    c.email AS "Email",
     CONCAT(b.name,' | ',p.name) AS "Product",
     p.price AS "Price",
     CASE
@@ -185,6 +187,20 @@ BEGIN
 	END IF;
 END
 //
+
+DELIMITER //
+CREATE TRIGGER validate_channel
+BEFORE INSERT ON shopping_history
+FOR EACH ROW
+BEGIN    
+    IF NEW.channel_id = 2
+    AND NEW.store_id IS NOT NULL THEN
+		SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Online purchase should have a blank store_id';
+	END IF;
+END
+//
+
 
 DELIMITER //
 CREATE TRIGGER update_total_spent
