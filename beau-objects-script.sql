@@ -20,6 +20,7 @@ JOIN category ca ON p.category_id = ca.id
 JOIN subcategory sc ON p.subcategory_id = sc.id
 ORDER BY p.id ASC;
 
+
 CREATE VIEW v_in_stock AS
 SELECT 
     p.id AS "Product ID",
@@ -35,6 +36,7 @@ JOIN subcategory sc ON p.subcategory_id = sc.id
 WHERE p.out_of_stock = 0
 ORDER BY p.id ASC;
 
+
 CREATE VIEW v_customer_info AS
 SELECT
 	c.id AS "Customer ID",
@@ -48,6 +50,7 @@ SELECT
     CONCAT(cd.hair_type,' - ',cd.hair_concern) AS "Hair Info"
 FROM customers c
 JOIN customer_details cd ON cd.customer_id = c.id;
+
 
 CREATE VIEW v_shopping_historic AS
 SELECT
@@ -67,6 +70,7 @@ JOIN products p ON p.id = sd.product_id
 GROUP BY sh.id
 ORDER BY sh.date DESC;
 
+
 CREATE VIEW v_customer_loved_products AS
 SELECT
 	p.id AS "Product ID",
@@ -82,6 +86,9 @@ JOIN customers c ON lp.customer_id = c.id
 JOIN products p ON lp.product_id = p.id
 JOIN brands b ON p.brand_id = b.id
 ORDER BY p.id ASC;
+
+
+
 
 -- FUNCIONES --
 
@@ -122,29 +129,9 @@ BEGIN
 END //
 
 
+
+
 -- STORED PROCEDURES --
-
-DELIMITER //
-CREATE PROCEDURE new_purchase_order(
-	IN p_customer_id INT,
-    IN p_channel_id INT,
-    IN p_store_id INT)
-BEGIN
-	INSERT INTO shopping_history (DATE, customer_id, channel_id, total_spent, store_id)
-    VALUES (NOW(), p_customer_id, p_channel_id, 0, p_store_id);
-END
-//
-
-DELIMITER //
-CREATE PROCEDURE new_purchase_details(
-	IN p_shopping_history_id INT,
-    IN p_product_id INT)
-BEGIN
-	INSERT INTO shopping_details (shopping_history_id, product_id)
-    VALUES (p_shopping_history_id, p_product_id);
-END
-//
-
 
 DELIMITER //
 CREATE PROCEDURE new_customer(
@@ -162,6 +149,31 @@ END
 //
 
 
+DELIMITER //
+CREATE PROCEDURE new_purchase_order(
+	IN p_customer_id INT,
+    IN p_channel_id INT,
+    IN p_store_id INT)
+BEGIN
+	INSERT INTO shopping_history (DATE, customer_id, channel_id, total_spent, store_id)
+    VALUES (NOW(), p_customer_id, p_channel_id, 0, p_store_id);
+END
+//
+
+
+DELIMITER //
+CREATE PROCEDURE new_purchase_details(
+	IN p_shopping_history_id INT,
+    IN p_product_id INT)
+BEGIN
+	INSERT INTO shopping_details (shopping_history_id, product_id)
+    VALUES (p_shopping_history_id, p_product_id);
+END
+//
+
+
+
+
 -- TRIGGERS --
 
 DELIMITER //
@@ -170,6 +182,7 @@ BEFORE UPDATE ON customers
 FOR EACH ROW
 SET NEW.updated_at = NOW();
 //
+
 
 DELIMITER //
 CREATE TRIGGER check_existent_customer
@@ -188,6 +201,7 @@ BEGIN
 	END IF;
 END
 //
+
 
 DELIMITER //
 CREATE TRIGGER validate_channel
