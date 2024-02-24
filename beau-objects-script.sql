@@ -79,7 +79,6 @@ FROM loved_products lp
 JOIN customers c ON lp.customer_id = c.id
 JOIN products p ON lp.product_id = p.id
 JOIN brands b ON p.brand_id = b.id
-WHERE c.email = 'ethan.williams@email.com'
 ORDER BY p.id ASC;
 
 -- FUNCIONES --
