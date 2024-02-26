@@ -177,7 +177,7 @@ END
 -- TRIGGERS --
 
 DELIMITER //
-CREATE TRIGGER update_customers
+CREATE TRIGGER update_customer
 BEFORE UPDATE ON customers
 FOR EACH ROW
 SET NEW.updated_at = NOW();
@@ -185,7 +185,7 @@ SET NEW.updated_at = NOW();
 
 
 DELIMITER //
-CREATE TRIGGER check_existent_customer
+CREATE TRIGGER validate_email
 BEFORE INSERT ON customers
 FOR EACH ROW
 BEGIN
